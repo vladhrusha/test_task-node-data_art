@@ -7,6 +7,7 @@ const handleGetJokes = async () => {
     return {
       jokes: jokes.map((entity) => {
         return {
+          id: entity.id,
           question: entity.question,
           answer: entity.answer,
         };

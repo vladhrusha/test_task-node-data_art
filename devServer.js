@@ -4,7 +4,14 @@ const express = require("express");
 
 const app = express();
 
-const { handleGetJokes, handleAddJoke } = require("./utils/requestHandlers");
+const {
+  handleGetJokes,
+  handleAddJoke,
+  handleGetJokeRandom,
+  handleDeleteJoke,
+  handleUpdateJoke,
+  handleAddVote,
+} = require("./utils/requestHandlers");
 
 const port = process.env.PORT || 3131;
 app.use(express.json());
@@ -28,12 +35,52 @@ app.get(`/${appName}/${appVersion}/jokes`, async (req, res) => {
   }
 });
 
-console.log(port);
+//get random joke
+app.get(`/api/joke`, async (req, res) => {
+  try {
+    const joke = await handleGetJokeRandom();
+
+    res.status(200).json({ message: joke });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
 //add joke
 app.post(`/${appName}/${appVersion}/joke`, async (req, res) => {
   try {
     await handleAddJoke(req.body);
     res.status(201).json({ message: "joke added" });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
+//update joke
+app.put(`/api/joke/:id`, async (req, res) => {
+  try {
+    await handleUpdateJoke(req);
+    res.status(201).json({ message: "joke updated" });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
+//get delete joke
+app.delete(`/api/joke/:id`, async (req, res) => {
+  try {
+    await handleDeleteJoke(req);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
+//add vote
+app.post(`/api/joke/:id`, async (req, res) => {
+  try {
+    await handleAddVote(req);
+    res.status(200).send();
   } catch (err) {
     res.status(500).json({ error: err });
   }
