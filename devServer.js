@@ -55,7 +55,7 @@ app.get(`/api/joke`, async (req, res) => {
 //add joke
 app.post(`/${appName}/${appVersion}/joke`, async (req, res) => {
   try {
-    await handleAddJoke(req.body);
+    await handleAddJoke(req);
     res.status(201).json({ message: "joke added" });
   } catch (err) {
     res.status(500).json({ error: err });
