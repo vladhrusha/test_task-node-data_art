@@ -16,6 +16,12 @@ const {
 const port = process.env.PORT || 3131;
 app.use(express.json());
 
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 const appName = process.env.APP_NAME;
 
 const appVersion = process.env.APP_VERSION;
