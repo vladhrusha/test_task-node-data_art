@@ -22,17 +22,15 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
-const appName = process.env.APP_NAME;
 
-const appVersion = process.env.APP_VERSION;
-
-app.get(`/${appName}/${appVersion}/`, (req, res) => {
+//ping
+app.get(`/`, (req, res) => {
   res.status(200);
-  res.send("test");
+  res.send("Ping");
 });
 
 //get all jokes
-app.get(`/${appName}/${appVersion}/jokes`, async (req, res) => {
+app.get(`/jokes`, async (req, res) => {
   try {
     const jokes = await handleGetJokes(req.body);
     res.status(200).json({ message: jokes });
@@ -53,7 +51,7 @@ app.get(`/api/joke`, async (req, res) => {
 });
 
 //add joke
-app.post(`/${appName}/${appVersion}/joke`, async (req, res) => {
+app.post(`/joke`, async (req, res) => {
   try {
     await handleAddJoke(req);
     res.status(201).json({ message: "joke added" });
