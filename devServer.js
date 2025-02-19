@@ -1,9 +1,5 @@
 require("dotenv").config();
 
-const express = require("express");
-
-const app = express();
-
 const {
   handleGetJokes,
   handleAddJoke,
@@ -12,6 +8,10 @@ const {
   handleUpdateJoke,
   handleAddVote,
 } = require("./utils/requestHandlers");
+
+const express = require("express");
+
+const app = express();
 
 const port = process.env.PORT || 3131;
 app.use(express.json());
@@ -24,13 +24,13 @@ app.use(
 );
 
 //ping
-app.get(`/`, (req, res) => {
+app.get(`/api/`, (req, res) => {
   res.status(200);
   res.send("Ping");
 });
 
 //get all jokes
-app.get(`/jokes`, async (req, res) => {
+app.get(`/api/jokes`, async (req, res) => {
   try {
     const jokes = await handleGetJokes(req.body);
     res.status(200).json({ message: jokes });
@@ -51,7 +51,7 @@ app.get(`/api/joke`, async (req, res) => {
 });
 
 //add joke
-app.post(`/joke`, async (req, res) => {
+app.post(`/api/joke`, async (req, res) => {
   try {
     await handleAddJoke(req);
     res.status(201).json({ message: "joke added" });
@@ -94,5 +94,3 @@ app.listen(port, (error) => {
   if (!error) console.log("Server is Successfully Running, and App is listening on port " + port);
   else console.log("Error occurred, server can't start", error);
 });
-
-//test heroku 4
